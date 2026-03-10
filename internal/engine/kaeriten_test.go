@@ -17,8 +17,9 @@ func TestGetCharOrder(t *testing.T) {
 		"single reten":	{input: "レ ", output: []int{1,0}},
 		"single ichiniten":	{input: "二 一", output: []int{2,0,1}},
 		"ichinisan":	{input: "三   二 一", output: []int{6,0,1,2,5,3,4}},
-		"alternative ichinisan": {input: "  三 二 一", output: []int{0,1,6,2,5,3,4}},
 		"re and nums": {input: "レ二 一レ二 一", output: []int{3,2,0,1,7,6,4,5}}, 
+		"kououtheitei basic": {input: "丁 丙 乙 甲", output: []int{6,0,5,1,4,2,3}}, 
+		"kouotsuheitei w/ ichinisan": {input: "丁       丙  二 一  乙 甲", output: []int{18,0,1,2,3,4,5,6,17,7,8,11,9,10,12,13,16,14,15}}, 
 	} 
 
 	for name, tc := range tests {
