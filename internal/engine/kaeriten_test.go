@@ -20,6 +20,9 @@ func TestGetCharOrder(t *testing.T) {
 		"re and nums": {input: "レ二 一レ二 一", output: []int{3,2,0,1,7,6,4,5}}, 
 		"kououtheitei basic": {input: "丁 丙 乙 甲", output: []int{6,0,5,1,4,2,3}}, 
 		"kouotsuheitei w/ ichinisan": {input: "丁       丙  二 一  乙 甲", output: []int{18,0,1,2,3,4,5,6,17,7,8,11,9,10,12,13,16,14,15}}, 
+		"jouchuuge": {input: "下 中  上", output: []int{5,0,4,1,2,3}},
+		"jouge": {input: "下  上", output: []int{3,0,1,2}},
+		"koujouichi seq": {input: "乙下二 一上甲 ", output: []int{6,4,2,0,1,3,5,7}},
 	} 
 
 	for name, tc := range tests {
