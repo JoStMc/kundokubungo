@@ -24,6 +24,7 @@ func TestGetCharOrder(t *testing.T) {
 		"jouge": {input: "下  上", output: []int{3,0,1,2}},
 		"koujouichi seq": {input: "乙下二 一上甲 ", output: []int{6,4,2,0,1,3,5,7}},
 		"tenchi": {input: "人  乙下二 一中 上甲 二 一 地 天  レ 二  一", output: []int{19,0,1,10,8,4,2,3,7,5,6,9,11,14,12,13,15,18,16,17,20,21,23,22,27,24,25,26}},
+		"out of order": {input: "十 二 三 四 五 六 七 八 九 一", output: []int{18,0,10,1,11,2,12,3,13,4,14,5,15,6,16,7,17,8,9}},
 	} 
 
 	for name, tc := range tests {

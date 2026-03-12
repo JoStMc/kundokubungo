@@ -1,6 +1,8 @@
 package engine
 
 import (
+	"slices"
+
 	"github.com/JoStMc/kundokubungo/internal/models"
 )
 
@@ -9,6 +11,12 @@ import (
 var kaeritenTypes = map[string]func(*config, int) {
 	models.MarkRe: (*config).reten,
 	"": (*config).allChars,
+	"一": (*config).recursivePull,
+	"上": (*config).recursivePull,
+	"甲": (*config).recursivePull,
+	"天": (*config).recursivePull,
+	"元": (*config).recursivePull,
+	"乾": (*config).recursivePull,
 } 
 
 
@@ -29,14 +37,14 @@ func getCharOrder(sentence *models.Sentence) ([]int, error) {
 	cfg := config{
 		sentence: characters,
 		marks: make(map[string]int),
-		order: make([]int, len(characters)),
+		order: slices.Repeat([]int{-1}, len(characters)),
 		currentChar: 0,
 	} 
 
 	for i, char := range characters {
 		kaeriFunc, ok := kaeritenTypes[char.Kaeriten]
 		if !ok {
-			kaeriFunc = (*config).sequenceFunc
+			kaeriFunc = (*config).saveCharPos
 		} 
 		kaeriFunc(&cfg, i)
 	} 
@@ -58,78 +66,33 @@ func (cfg *config) reten(index int) {
 	// We don't want to add 1 to the current char
 } 
 
-// The next function is a generic function for 一二三, 甲乙丙丁, 元亨利貞 or
+// The next function is a generic function for 二三, 乙丙丁, 亨利貞 or
 // other kaeriten which work by returning to those characters sequentially
-// 上中下 need special treatment because of the potential for just 上下
-func (cfg *config) sequenceFunc(index int) {
+func (cfg *config) saveCharPos(index int) {
 	curMark := cfg.sentence[index].Kaeriten
 	cfg.marks[curMark] = index
-	prevMark, notFirst := previousMarks[curMark]
-	nextMark, notLast := nextMarks[curMark]
-
-	// Following: if 上 and no 中, check 下
-	// Then if 下 and no 中, check 上
-	// I do not believe there are other marks which skip like this,
-	// but recursive checking could be implemented if need arises
-	if _, ok := cfg.marks[nextMark]; !ok {
-		nextMark = nextMarks[nextMark]
-	} 
-	if _, ok := cfg.marks[prevMark]; !ok {
-		prevMark = previousMarks[prevMark]
-	} 
-
-	if !notFirst {
-		cfg.allChars(index)
-		cfg.sequenceFunc(cfg.marks[nextMark])
-		delete(cfg.marks, curMark)
-	} else {
-		if _, ok := cfg.marks[prevMark]; ok {
-			cfg.allChars(index)
-			if notLast {
-				if nextIndex, ok := cfg.marks[nextMark]; ok {
-					cfg.sequenceFunc(nextIndex)
-				} 
-			} 
-			delete(cfg.marks, curMark)
-		} 
-	}
 } 
 
-var previousMarks = map[string]string{
-	// 一二
-	"二": "一",
-	"三": "二",
-	"四": "三", 
-	"五": "四",
-	"六": "七",
-	"七": "八",
-	"八": "九",
-	"九": "十",
+// This sets off the loop scanning back over characters
+// 上中下 need special treatment because of the potential for just 上下
+func (cfg *config) recursivePull(index int) {
+	cfg.allChars(index)
 
-	// 上下
-	"中": "上",
-	"下": "中",
+	curMark := cfg.sentence[index].Kaeriten
+	nextMark := nextMarks[curMark]
 
-	// 十干
-	"乙": "甲",
-	"丙": "乙",
-	"丁": "丙",
-	"戊": "丁",
-	"己": "戊",
-	// (庚辛壬癸)
+	// For when the mark is 上 and there is no 中
+	if _, ok := cfg.marks[nextMark]; !ok {
+	    nextMark = nextMarks[nextMark]
+	} 
 
-	// 天地人
-	"地": "天",
-	"人": "地",
+	nextIndex, ok := cfg.marks[nextMark]
+	if ok {
+		cfg.recursivePull(nextIndex)
+	} 
+	delete(cfg.marks, curMark)
+} 
 
-	// 四徳
-	"亨": "元",
-	"利": "亨",
-	"貞": "利",
-
-	// 乾坤
-	"坤": "乾",
-}
 var nextMarks = map[string]string{
 	// 一二
 	"一":"二",
@@ -152,7 +115,8 @@ var nextMarks = map[string]string{
 	"丙":"丁",
 	"丁": "戊",
 	"戊": "己",
-	
+	// (庚辛壬癸)
+
 	// 天地人
 	"天": "地",
 	"地": "人",
