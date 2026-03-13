@@ -57,12 +57,28 @@ func getCharOrder(sentence *models.Sentence) ([]int, error) {
 } 
 
 func (cfg *config) allChars(index int) {
-	// cfg.order[index] = cfg.currentChar
+	current := cfg.sentence[index]
+
+	if current.IsJukugoTail{
+	    return
+	} 
+
 	cfg.order[cfg.currentChar] = index
 	cfg.currentChar++
-	if index != 0 && cfg.sentence[index-1].Kaeriten == models.MarkRe {
-		cfg.allChars(index-1)
+	if current.IsJukugoHead  {
+		cfg.order[cfg.currentChar] = index + 1
+		cfg.currentChar++
 	} 
+
+	if index != 0 {
+		prevIndex := index - 1
+		if cfg.sentence[prevIndex].IsJukugoTail {
+		    prevIndex--
+		} 
+		if cfg.sentence[prevIndex].Kaeriten == models.MarkRe{
+			cfg.allChars(prevIndex)
+		} 
+	}
 } 
 
 func (cfg *config) reten(index int) {

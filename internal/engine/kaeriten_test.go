@@ -51,6 +51,32 @@ func TestGetCharOrder(t *testing.T) {
 			output: []int{0,1,3,2,4,5,6,8,9,10,7,4,11}}, 
 	} 
 
+	hyphenTests := map[string]struct {
+	    input models.Sentence
+		output []int
+	}{
+		"basic hyphen": {input: models.Sentence{Characters: []models.Character{
+							{IsJukugoHead: true, Kaeriten: "二"},
+							{IsJukugoTail: true},
+							{},
+							{Kaeriten: "一"}}}, 
+		output: []int{2,3,0,1}},
+		"two hyphens": {input: models.Sentence{Characters: []models.Character{
+							{IsJukugoHead: true, Kaeriten: "二"},
+							{IsJukugoTail: true},
+							{IsJukugoHead: true, Kaeriten: "三"},
+							{IsJukugoTail: true},
+							{},
+							{Kaeriten: "一"}}}, 
+		output: []int{4,5,0,1,2,3}},
+		"re hyphen": {input: models.Sentence{Characters: []models.Character{
+							{IsJukugoHead: true, Kaeriten: "レ"},
+							{IsJukugoTail: true},
+							{}}},
+			output: []int{2,0,1},
+		},
+	} 
+
 	for name, tc := range tests {
 		sentence := makeSentence(&tc.input)
 		got, err := getCharOrder(&sentence)
@@ -63,6 +89,16 @@ func TestGetCharOrder(t *testing.T) {
 	} 
 
 	for name, tc := range saidokuTests {
+		got, err := getCharOrder(&tc.input)
+		if err != nil {
+		    t.Fatal("Error parsing sentence", err)
+		} 
+		if !reflect.DeepEqual(tc.output, got) {
+			t.Fatalf("%s: expected: %v, got: %v", name, tc.output, got)
+		} 
+	} 
+
+	for name, tc := range hyphenTests {
 		got, err := getCharOrder(&tc.input)
 		if err != nil {
 		    t.Fatal("Error parsing sentence", err)

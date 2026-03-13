@@ -6,7 +6,8 @@ type Character struct {
 	Okurigana 		string
 	SecondOkurigana string
 	IsSaidokumoji 	bool
-	IsJukugo		bool
+	IsJukugoHead	bool
+	IsJukugoTail	bool
 } 
 
 type Sentence struct {
