@@ -53,7 +53,8 @@ func getCharOrder(sentence *models.Sentence) ([]int, error) {
 } 
 
 func (cfg *config) allChars(index int) {
-	cfg.order[index] = cfg.currentChar
+	// cfg.order[index] = cfg.currentChar
+	cfg.order[cfg.currentChar] = index
 	cfg.currentChar++
 	if index != 0 && cfg.sentence[index-1].Kaeriten == models.MarkRe {
 		cfg.allChars(index-1)
