@@ -27,9 +27,43 @@ func TestGetCharOrder(t *testing.T) {
 		"out of order": {input: "十 二 三 四 五 六 七 八 九 一", output: []int{1,3,5,7,9,11,13,15,17,18,2,4,6,8,10,12,14,16,0}},
 	} 
 
+	saidokuTests := map[string]struct {
+		input models.Sentence
+		output []int
+	}{
+		"re saidoku": {input: models.Sentence{Characters: []models.Character{
+						{}, 
+						{IsSaidokumoji: true, Kaeriten: "レ"}, 
+						{Kaeriten: "レ"}, 
+						{}}},
+			output: []int{0,1,3,2,1}},
+
+		"sen saidoku": {input: models.Sentence{Characters: []models.Character{
+						{}, {}, 
+						{Kaeriten: "レ"}, 
+						{}, 
+						{IsSaidokumoji: true, Kaeriten: "三"}, 
+						{}, {}, 
+						{Kaeriten: "二"}, 
+						{}, {}, 
+						{Kaeriten: "一"}, 
+						{}}},
+			output: []int{0,1,3,2,4,5,6,8,9,10,7,4,11}}, 
+	} 
+
 	for name, tc := range tests {
 		sentence := makeSentence(&tc.input)
 		got, err := getCharOrder(&sentence)
+		if err != nil {
+		    t.Fatal("Error parsing sentence", err)
+		} 
+		if !reflect.DeepEqual(tc.output, got) {
+			t.Fatalf("%s: expected: %v, got: %v", name, tc.output, got)
+		} 
+	} 
+
+	for name, tc := range saidokuTests {
+		got, err := getCharOrder(&tc.input)
 		if err != nil {
 		    t.Fatal("Error parsing sentence", err)
 		} 

@@ -1,8 +1,6 @@
 package engine
 
 import (
-	"slices"
-
 	"github.com/JoStMc/kundokubungo/internal/models"
 )
 
@@ -33,11 +31,17 @@ type config struct {
 // order should be BADC. 
 func getCharOrder(sentence *models.Sentence) ([]int, error) {
 	characters := sentence.Characters
+	saidokuCount := 0
+	for _, char := range(characters) {
+		if char.IsSaidokumoji {
+		    saidokuCount++
+		} 
+	} 
 
 	cfg := config{
 		sentence: characters,
 		marks: make(map[string]int),
-		order: slices.Repeat([]int{-1}, len(characters)),
+		order: make([]int, len(characters)+saidokuCount),
 		currentChar: 0,
 	} 
 
@@ -62,6 +66,9 @@ func (cfg *config) allChars(index int) {
 } 
 
 func (cfg *config) reten(index int) {
+	if cfg.sentence[index].IsSaidokumoji {
+		cfg.allChars(index)
+	} 
 	// This function should do nothing, because allChars should
 	// catch reten by checking if the previous char is reten.
 	// We don't want to add 1 to the current char
@@ -70,6 +77,9 @@ func (cfg *config) reten(index int) {
 // The next function is a generic function for 二三, 乙丙丁, 亨利貞 or
 // other kaeriten which work by returning to those characters sequentially
 func (cfg *config) saveCharPos(index int) {
+	if cfg.sentence[index].IsSaidokumoji {
+		cfg.allChars(index)
+	} 
 	curMark := cfg.sentence[index].Kaeriten
 	cfg.marks[curMark] = index
 } 
