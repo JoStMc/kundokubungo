@@ -54,7 +54,15 @@ func TestKakikudashi(t *testing.T) {
 							{Kanji: "以", Okurigana: "テ"},
 							{Kanji: "禦", Kaeriten: "一レ", Okurigana: "グ"},
 							{Kanji: "寒", Okurigana: "キヲ"}}},
-						output: "璧ハ以テ寒キヲ禦グ可カラ不"}, 
+						output: "璧ハ以テ寒キヲ禦グ可カラ不"},
+		"saidoku, no okuri": {input: models.Sentence{Characters: []models.Character{
+							{Kanji: "未", Kaeriten: "レ", Okurigana: "ダ", IsSaidokumoji: true},
+							{Kanji: "来", Okurigana: "タラ"}}},
+						output: "未ダ来タラ未"}, 
+		"saidoku, okuri": {input: models.Sentence{Characters: []models.Character{
+							{Kanji: "当", Kaeriten: "レ", Okurigana: "二", IsSaidokumoji: true, SecondOkurigana: "シ"},
+							{Kanji: "学", Okurigana: "ブ"}}},
+						output: "当二学ブ当シ"},
 	} 
 
 	for name, tc := range tests {

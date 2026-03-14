@@ -21,6 +21,9 @@ func ToKakikudashi(sentence *models.Sentence) (string, error) {
 		if _, ok := saidokuParsed[charIdx]; ok {
 			okurigana = char.SecondOkurigana
 		} 
+		if char.IsSaidokumoji {
+		    saidokuParsed[charIdx] = struct{}{}
+		} 
 		output.WriteString(kanji)
 		output.WriteString(okurigana)
 	} 
