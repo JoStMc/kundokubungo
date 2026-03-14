@@ -15,6 +15,9 @@ var kaeritenTypes = map[string]func(*config, int) {
 	"天": (*config).recursivePull,
 	"元": (*config).recursivePull,
 	"乾": (*config).recursivePull,
+
+	"一レ":(*config).reten,
+	"上レ":(*config).reten,
 } 
 
 
@@ -46,7 +49,7 @@ func getCharOrder(sentence *models.Sentence) ([]int, error) {
 	} 
 
 	for i, char := range characters {
-		kaeriFunc, ok := kaeritenTypes[char.Kaeriten]
+		kaeriFunc, ok := kaeritenTypes[string(char.Kaeriten)]
 		if !ok {
 			kaeriFunc = (*config).saveCharPos
 		} 
@@ -75,8 +78,12 @@ func (cfg *config) allChars(index int) {
 		if cfg.sentence[prevIndex].IsJukugoTail {
 		    prevIndex--
 		} 
-		if cfg.sentence[prevIndex].Kaeriten == models.MarkRe{
-			cfg.allChars(prevIndex)
+		prevMark := cfg.sentence[prevIndex].Kaeriten
+
+		if prevMark == models.MarkRe {
+		    cfg.allChars(prevIndex)
+		} else if _, ok := reMarks[prevMark]; ok {
+			cfg.recursivePull(prevIndex)
 		} 
 	}
 } 
@@ -105,7 +112,7 @@ func (cfg *config) saveCharPos(index int) {
 func (cfg *config) recursivePull(index int) {
 	cfg.allChars(index)
 
-	curMark := cfg.sentence[index].Kaeriten
+	curMark := cfg.sentence[index].Kaeriten[0:3]
 	nextMark := nextMarks[curMark]
 
 	// For when the mark is 上 and there is no 中
@@ -155,4 +162,9 @@ var nextMarks = map[string]string{
 
 	// 乾坤
 	"乾": "坤",
+} 
+
+var reMarks = map[string]struct{}{
+	"上レ": {},
+	"一レ": {},
 } 

@@ -27,40 +27,34 @@ func TestGetCharOrder(t *testing.T) {
 		"out of order": {input: "十 二 三 四 五 六 七 八 九 一", output: []int{1,3,5,7,9,11,13,15,17,18,2,4,6,8,10,12,14,16,0}},
 	} 
 
-	saidokuTests := map[string]struct {
+	otherTests := map[string]struct {
 		input models.Sentence
 		output []int
 	}{
 		"re saidoku": {input: models.Sentence{Characters: []models.Character{
-						{}, 
-						{IsSaidokumoji: true, Kaeriten: "レ"}, 
-						{Kaeriten: "レ"}, 
-						{}}},
-			output: []int{0,1,3,2,1}},
+							{}, 
+							{IsSaidokumoji: true, Kaeriten: "レ"}, 
+							{Kaeriten: "レ"}, 
+							{}}},
+						output: []int{0,1,3,2,1}},
 
 		"sen saidoku": {input: models.Sentence{Characters: []models.Character{
-						{}, {}, 
-						{Kaeriten: "レ"}, 
-						{}, 
-						{IsSaidokumoji: true, Kaeriten: "三"}, 
-						{}, {}, 
-						{Kaeriten: "二"}, 
-						{}, {}, 
-						{Kaeriten: "一"}, 
-						{}}},
-			output: []int{0,1,3,2,4,5,6,8,9,10,7,4,11}}, 
-	} 
-
-	hyphenTests := map[string]struct {
-	    input models.Sentence
-		output []int
-	}{
+							{}, {}, 
+							{Kaeriten: "レ"}, 
+							{}, 
+							{IsSaidokumoji: true, Kaeriten: "三"}, 
+							{}, {}, 
+							{Kaeriten: "二"}, 
+							{}, {}, 
+							{Kaeriten: "一"}, 
+							{}}},
+						output: []int{0,1,3,2,4,5,6,8,9,10,7,4,11}}, 
 		"basic hyphen": {input: models.Sentence{Characters: []models.Character{
 							{IsJukugoHead: true, Kaeriten: "二"},
 							{IsJukugoTail: true},
 							{},
 							{Kaeriten: "一"}}}, 
-		output: []int{2,3,0,1}},
+						output: []int{2,3,0,1}},
 		"two hyphens": {input: models.Sentence{Characters: []models.Character{
 							{IsJukugoHead: true, Kaeriten: "二"},
 							{IsJukugoTail: true},
@@ -68,13 +62,29 @@ func TestGetCharOrder(t *testing.T) {
 							{IsJukugoTail: true},
 							{},
 							{Kaeriten: "一"}}}, 
-		output: []int{4,5,0,1,2,3}},
+						output: []int{4,5,0,1,2,3}},
 		"re hyphen": {input: models.Sentence{Characters: []models.Character{
 							{IsJukugoHead: true, Kaeriten: "レ"},
 							{IsJukugoTail: true},
 							{}}},
-			output: []int{2,0,1},
+						output: []int{2,0,1},
 		},
+		"ichire": {input: models.Sentence{Characters: []models.Character{
+							{},
+							{Kaeriten: "レ"},
+							{Kaeriten: "二"},
+							{},
+							{Kaeriten: "一レ"},
+							{}}},
+						output: []int{0,3,5,4,2,1}}, 
+		"joure": {input: models.Sentence{Characters: []models.Character{
+							{Kaeriten: "下"},
+							{Kaeriten: "二"},
+							{},
+							{Kaeriten: "一"},
+							{Kaeriten: "上レ"},
+							{}}},
+						output: []int{2,3,1,5,4,0}}, 
 	} 
 
 	for name, tc := range tests {
@@ -88,17 +98,7 @@ func TestGetCharOrder(t *testing.T) {
 		} 
 	} 
 
-	for name, tc := range saidokuTests {
-		got, err := getCharOrder(&tc.input)
-		if err != nil {
-		    t.Fatal("Error parsing sentence", err)
-		} 
-		if !reflect.DeepEqual(tc.output, got) {
-			t.Fatalf("%s: expected: %v, got: %v", name, tc.output, got)
-		} 
-	} 
-
-	for name, tc := range hyphenTests {
+	for name, tc := range otherTests {
 		got, err := getCharOrder(&tc.input)
 		if err != nil {
 		    t.Fatal("Error parsing sentence", err)
