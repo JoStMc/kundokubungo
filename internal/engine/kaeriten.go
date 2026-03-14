@@ -82,7 +82,7 @@ func (cfg *config) allChars(index int) {
 
 		if prevMark == models.MarkRe {
 		    cfg.allChars(prevIndex)
-		} else if _, ok := reMarks[prevMark]; ok {
+		} else if len(prevMark) == 6 && prevMark[3:] == models.MarkRe {
 			cfg.recursivePull(prevIndex)
 		} 
 	}
@@ -164,7 +164,3 @@ var nextMarks = map[string]string{
 	"乾": "坤",
 } 
 
-var reMarks = map[string]struct{}{
-	"上レ": {},
-	"一レ": {},
-} 
