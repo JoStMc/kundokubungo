@@ -1,6 +1,7 @@
 const rawInput = document.getElementById('input');
 const inputButton = document.getElementById('btn-input');
 const tategaki = document.querySelector('.tategaki');
+const kakikudashi = document.querySelector('.kakikudashi');
 
 async function renderTategaki(sentence) {
     const container = document.getElementById("tategaki");
@@ -23,6 +24,7 @@ async function renderTategaki(sentence) {
 inputButton.addEventListener('click', async () => {
     const text = rawInput.value;
     if (!text) return; 
+    kakikudashi.innerHTML = text;
 
     try {
         const response = await fetch('/api/sentences', {
@@ -45,3 +47,4 @@ inputButton.addEventListener('click', async () => {
         alert("Failure; check the console");
     }
 });
+;
