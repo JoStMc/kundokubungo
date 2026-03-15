@@ -50,7 +50,12 @@
 .container div.tategaki {
     grid-area: tategaki;
     writing-mode: vertical-rl;
+    display: flex;
     height: 70vh;
+}
+
+span {
+    font-size: 50px;
 }
 
 .container div.kakikudashi {

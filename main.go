@@ -29,7 +29,10 @@ func main() {
 
 	mux := http.NewServeMux()
 	appHandler := http.StripPrefix("/app", http.FileServer(http.Dir(filepathRoot)))
+
 	mux.Handle("/app/", appHandler)
+	mux.HandleFunc("POST /api/sentences", handlerCreate)
+	mux.HandleFunc("PATCH /api/sentences/{id}", handlerUpdate)
 
 	srv := &http.Server{
 		Addr:    ":" + port,
