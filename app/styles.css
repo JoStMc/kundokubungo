@@ -6,16 +6,10 @@
     grid-template-columns: 1fr 2fr;
     gap: 4px;
     padding: 4px;
-    background-color: black;
-}
-
-.container div {
-    background-color: white;
     font-size: 26px;
-    padding: 10px;
 }
 
-.container div.input-container {
+.input-container {
     grid-area: header;
     align-items: center;
     display: flex;
@@ -36,7 +30,7 @@
     font-size: 26px;
 }
 
-.btn-input {
+#btn-input {
     margin: 10px;
     padding: 6px 8px;
     cursor: pointer;
@@ -47,19 +41,61 @@
     font-size: 20px;
 }
 
-.container div.tategaki {
+.tategaki {
     grid-area: tategaki;
     writing-mode: vertical-rl;
     display: flex;
     height: 70vh;
+    flex-wrap: wrap;
+    overflow-x: auto;
+    border: 2px solid black;
 }
+
+
+.kakikudashi {
+    grid-area: kakikudashi;
+    height: 70vh;
+    border: 2px solid black;
+}
+
 
 span {
     font-size: 50px;
 }
 
-.container div.kakikudashi {
-    grid-area: kakikudashi;
-    height: 70vh;
+.kanji-box {
+    width: 90px;
+    min-height: 90px;
+    padding-right: 30px;
 }
 
+.kaeriten, .okurigana {
+    position: relative;
+    background: transparent;
+    border: none;
+    width: 25px;
+    min-height: 25px;
+    max-height: 100px;
+    height: auto;
+    overflow-y: auto;
+    width: 25px;
+    height: 25px;
+    font-size: 20px;
+    overflow: hidden;
+    resize: none;
+}
+
+.kaeriten {
+    right: 40px;
+    bottom: 20px;
+}
+
+.okurigana {
+    left: 40px;
+    bottom: 60px;
+}
+
+.kanji-box:hover .kaeriten,
+.kanji-box:hover .okurigana{
+    border: 1px solid black;
+}

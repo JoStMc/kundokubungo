@@ -10,7 +10,12 @@ async function renderTategaki(sentence) {
     characters.forEach((char, index) => {
         const box = document.createElement("div");
         box.className = "kanji-box";
-        box.innerHTML = `<span>${char.Kanji}</span>`;
+        box.innerHTML = `
+<span>${char.Kanji}</span>
+<textarea class="kaeriten"></textarea>
+<!-- <textarea class="okurigana2"></textarea> -->
+<textarea class="okurigana"></textarea>
+`;
         box.dataset.index = index; 
         container.appendChild(box);
     });}
