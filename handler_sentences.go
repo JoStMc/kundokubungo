@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"unicode/utf8"
 
+	"github.com/JoStMc/kundokubungo/internal/engine"
 	"github.com/JoStMc/kundokubungo/internal/models"
 )
 
@@ -16,6 +17,7 @@ type createRequest struct {
 
 type createResponse struct {
 	Sentence models.Sentence `json:"sentence"`
+	Id 		 int			 `json:"id"`
 } 
 
 func handlerCreate(w http.ResponseWriter, r *http.Request) {
@@ -36,10 +38,49 @@ func handlerCreate(w http.ResponseWriter, r *http.Request) {
 		runeCount++
 	} 
 
+	sentenceStore = sentence
+
 	respondWithJSON(w, http.StatusOK, createResponse{
 	    Sentence: sentence,
+		Id: 1,
 	})
 }
 
+
+type updateRequest struct {
+	Kaeriten   string `json:"kaeriten"`
+	Okuri      string `json:"okuri"`
+	Index 	   int	  `json:"index"`
+	SentenceId int    `json:"sentenc_id"`
+	UpdateType string `json:"update_type"`
+} 
+
+type updateResponse struct {
+	Text string `json:"text"`
+} 
+
 func handlerUpdate(w http.ResponseWriter, r *http.Request) {
+	var update updateRequest
+	err := json.NewDecoder(r.Body).Decode(&update)
+	if err != nil {
+		respondWithError(w, http.StatusInternalServerError, fmt.Sprint("Unable to decode request", err))
+		return
+	}
+
+	switch update.UpdateType {
+	case "kaeri":
+		sentenceStore.Characters[update.Index].Kaeriten = update.Kaeriten
+	case "okuri":
+		sentenceStore.Characters[update.Index].Okurigana = update.Okuri
+	} 
+
+	kakikudashi, err := engine.ToKakikudashi(&sentenceStore)
+	if err != nil {
+		respondWithError(w, http.StatusInternalServerError, fmt.Sprint("Unable to convert sentence:", err))
+		return
+	}
+
+	respondWithJSON(w, http.StatusOK, updateResponse{
+		Text: kakikudashi,
+	})
 } 

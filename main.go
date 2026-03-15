@@ -5,8 +5,11 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/JoStMc/kundokubungo/internal/models"
 	"github.com/joho/godotenv"
 )
+
+var sentenceStore models.Sentence
 
 func main() {
 	godotenv.Load(".env")
