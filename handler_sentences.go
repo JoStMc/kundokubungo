@@ -48,11 +48,10 @@ func handlerCreate(w http.ResponseWriter, r *http.Request) {
 
 
 type updateRequest struct {
-	Kaeriten   string `json:"kaeriten"`
-	Okuri      string `json:"okuri"`
+	Text       string `json:"text"`
 	Index 	   int	  `json:"index"`
 	SentenceId int    `json:"sentenc_id"`
-	UpdateType string `json:"update_type"`
+	UpdateType string `json:"type"`
 } 
 
 type updateResponse struct {
@@ -69,9 +68,9 @@ func handlerUpdate(w http.ResponseWriter, r *http.Request) {
 
 	switch update.UpdateType {
 	case "kaeri":
-		sentenceStore.Characters[update.Index].Kaeriten = update.Kaeriten
+		sentenceStore.Characters[update.Index].Kaeriten = update.Text
 	case "okuri":
-		sentenceStore.Characters[update.Index].Okurigana = update.Okuri
+		sentenceStore.Characters[update.Index].Okurigana = update.Text
 	} 
 
 	kakikudashi, err := engine.ToKakikudashi(&sentenceStore)
