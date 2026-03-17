@@ -3,6 +3,38 @@
 
 ---
 
+Kundokubungo is a tool to automatically display 白文 in 縦書き and allow for inputs of 返り点 and 送り仮名, as well as options for 再読文字 and 熟語, represented by a vertical line to the right and just below the first character of the 熟語 respectively. 
+
+再読|熟語
+:--:|:--:
+![saidokumoji](images/kundoku_sample.png) | ![jukugo](images/kundoku_sample2.png)
+
+
+## How to use
+
+- Enter 白文 in the text box at the top and click "Enter / 入力"
+- The text should appear in both boxes below (縦書き left and 書き下し文 right)
+- On hovering over a character, there should appear 2 buttons (labelled 塾 and 再) and three text boxes.
+  - 塾 should show a line below the character, indicating that it and the character below are a 熟語. You do not need to click 塾 on the character below.
+  - 再 should show a line to the right of the character, indicating that it is a 再読文字
+  - The left most text box is the second 送り仮名 (only applicable to 再読文字)
+  - The second text box is for the [返点](#返り点)
+  - The right most text box is for the first 送り仮名
+- The right box should then update with the correct 書き下し文 when either a button is clicked or when a text box loses focus.
+
+### Setup
+- Clone the directory:
+
+```
+git clone https://github.com/JoStMc/kundokubungo
+```
+
+- Ensure you have the latest version of Go: https://go.dev/dl/
+
+- Start the server `cd kundokubungo; go run .`
+
+- The server should be available on port 8091 at http://localhost:8091/app/
+
 ## 返り点
 
 #### レ点
