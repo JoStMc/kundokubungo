@@ -58,13 +58,15 @@ span {
 }
 
 .kanji-box {
-    width: 90px;
+    position: relative;
+    width: 50px;
     height: 100px;
-    padding-right: 30px;
+    padding-right: 25px;
+    padding-left: 40px;
 }
 
-.kaeriten, .okurigana {
-    position: relative;
+.kaeriten, .okurigana, .okurigana2{
+    position: absolute;
     background: transparent;
     border: none;
     width: 25px;
@@ -74,19 +76,67 @@ span {
 }
 
 .kaeriten {
-    top: 35px;
+    top: 50px;
+    left: 25px;
     height: 50px;
 }
 
 .okurigana {
-    top: 35px;
-    left: 120px;
-    height: 75px;
+    right: 0;
+    top: 25px;
+    height: 100px;
+}
+
+.okurigana2 {
+    left:0;
+    top:25px;
+    height: 50px;
+}
+
+.btn-issaidoku, .btn-isjuku {
+    position: absolute;
+    top: 0;
+    font-size: 0;
+    background: transparent;
+    border: none;
+}
+
+.btn-issaidoku {
+    right: 10px;
+}
+.line-s {
+    position: absolute;
+    left: 85px;
+    top: 0;
+    width: 2px;
+    height: 50px;
+    background-color: black;
+    display: none;
+}
+
+.btn-isjuku {
+    left: 15px;
+}
+.line-j {
+    position: absolute;
+    left: 55px;
+    bottom: 15px;
+    width: 2px;
+    height: 25px;
+    background-color: black;
+    display: none;
 }
 
 .kanji-box:hover .kaeriten,
-.kanji-box:hover .okurigana{
+.kanji-box:hover .okurigana,
+.kanji-box:hover .okurigana2,
+.kanji-box:hover .btn-issaidoku,
+.kanji-box:hover .btn-isjuku {
     border: 1px solid black;
+}
+.kanji-box:hover .btn-issaidoku,
+.kanji-box:hover .btn-isjuku {
+    font-size: 15px;
 }
 
 

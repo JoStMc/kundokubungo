@@ -66,11 +66,24 @@ func handlerUpdate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	character := sentenceStore.Characters[update.Index]
 	switch update.UpdateType {
 	case "kaeri":
-		sentenceStore.Characters[update.Index].Kaeriten = update.Text
+		character.Kaeriten = update.Text
 	case "okuri":
-		sentenceStore.Characters[update.Index].Okurigana = update.Text
+		character.Okurigana = update.Text
+	case "okuri2":
+		character.SecondOkurigana = update.Text
+	case "saidoku":
+		character.IsSaidokumoji = !character.IsSaidokumoji
+	case "juku":
+		if len(sentenceStore.Characters) == update.Index + 1 {
+		    respondWithError(w, http.StatusBadRequest, "Cannot set last character as jukugo")
+			return
+		} 
+		character.IsJukugoHead = !character.IsJukugoHead
+		nextChar := sentenceStore.Characters[update.Index + 1]
+		nextChar.IsJukugoTail = !nextChar.IsJukugoTail
 	} 
 
 	kakikudashi, err := engine.ToKakikudashi(&sentenceStore)
