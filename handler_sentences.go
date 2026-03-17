@@ -50,7 +50,7 @@ func handlerCreate(w http.ResponseWriter, r *http.Request) {
 type updateRequest struct {
 	Text       string `json:"text"`
 	Index 	   int	  `json:"index"`
-	SentenceId int    `json:"sentenc_id"`
+	SentenceId int    `json:"sentence_id"`
 	UpdateType string `json:"type"`
 } 
 
@@ -66,7 +66,7 @@ func handlerUpdate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	character := sentenceStore.Characters[update.Index]
+	character := &sentenceStore.Characters[update.Index]
 	switch update.UpdateType {
 	case "kaeri":
 		character.Kaeriten = update.Text
@@ -75,7 +75,9 @@ func handlerUpdate(w http.ResponseWriter, r *http.Request) {
 	case "okuri2":
 		character.SecondOkurigana = update.Text
 	case "saidoku":
+		fmt.Println(character.IsSaidokumoji)
 		character.IsSaidokumoji = !character.IsSaidokumoji
+		fmt.Println(character.IsSaidokumoji)
 	case "juku":
 		if len(sentenceStore.Characters) == update.Index + 1 {
 		    respondWithError(w, http.StatusBadRequest, "Cannot set last character as jukugo")

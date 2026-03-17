@@ -52,23 +52,23 @@ inputButton.addEventListener('click', async () => {
     }
 });
 
-async function updateSaidoku(index) {
-    const line = document.getElementById('saidoku' + index);
-    if (line.style.display == 'none') {
-        line.style.display = 'block';
-    } else {
-        line.style.display = 'none';
-    }
+function updateSaidoku(index) {
     updateSentence('', index, 'saidoku');
-}
-async function updateJuku(index) {
-    const line = document.getElementById('juku' + index);
-    if (line.style.display == 'none') {
-        line.style.display = 'block';
-    } else {
+    const line = document.getElementById('saidoku' + index);
+    if (line.style.display == 'block') {
         line.style.display = 'none';
+    } else {
+        line.style.display = 'block';
     }
+}
+function updateJuku(index) {
     updateSentence('', index, 'juku');
+    const line = document.getElementById('juku' + index);
+    if (line.style.display == 'block') {
+        line.style.display = 'none';
+    } else {
+        line.style.display = 'block';
+    }
 }
 
 async function updateSentence(value, index, type) {
