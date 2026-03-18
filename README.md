@@ -69,4 +69,4 @@ Each is parsed once the previous mark has been parsed. Typically these wrap  元
 A hyphen which ties together 2 characters (熟語), shown as a line to the right of 返り点.
 
 ### 再読文字
-Characters which are read twice; once as if the 返り点 were not there, then again with the usual 返り点 behaviour. This will be represented by a vertical line to the right of the character, and the second reading's 送り仮名 will be to the right of the 返り点.
+Characters which are read twice; once as if the 返り点 were not there, then again with the usual 返り点 behaviour. This will be represented by a vertical line to the right of the character, and the second reading's 送り仮名 will be to the left of the 返り点.
