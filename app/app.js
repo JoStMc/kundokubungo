@@ -106,8 +106,9 @@ async function charLookup(element) {
             throw new Error('Response failed: ' + response.statusText);
         }
 
-        const lookup = await response.json();
-        footer.innerHTML = lookup.imi;
+        const lookupResponse = await response.json();
+        const imi = lookupResponse.imi.replace(/\n/g, '<br>');
+        footer.innerHTML = imi;
 
     } catch (error) {
         console.error('Error:', error);
