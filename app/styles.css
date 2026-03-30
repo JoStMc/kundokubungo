@@ -2,7 +2,8 @@
     display: grid;
     grid-template-areas:
         "header header"
-        "tategaki kakikudashi";
+        "tategaki kakikudashi"
+        "footer footer";
     grid-template-columns: 1fr 2fr;
     gap: 4px;
     padding: 4px;
@@ -13,7 +14,14 @@
     grid-area: header;
     align-items: center;
     display: flex;
-    height: 20vh;
+    height: 10vh;
+}
+
+.footer {
+    grid-area: footer;
+    height: 15vh;
+    border: 2px solid black;
+    overflow: scroll;
 }
 
 #input {

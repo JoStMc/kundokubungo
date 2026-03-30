@@ -2,6 +2,7 @@ const rawInput = document.getElementById('input');
 const inputButton = document.getElementById('btn-input');
 const tategaki = document.querySelector('.tategaki');
 const kakikudashi = document.querySelector('.kakikudashi');
+const footer = document.querySelector('.footer');
 
 async function renderTategaki(sentence) {
     const container = document.getElementById("tategaki");
@@ -12,7 +13,7 @@ async function renderTategaki(sentence) {
         const box = document.createElement("div");
         box.className = "kanji-box";
         box.innerHTML = `
-<span>${char.Kanji}</span>
+<span onclick="charLookup(this)">${char.Kanji}</span>
 <button class="btn-issaidoku" onclick="updateSaidoku(${index})">再</button>
 <div class="line-s" id="saidoku${index}"></div>
 <button class="btn-isjuku" onclick="updateJuku(${index})">熟</button>
@@ -89,7 +90,27 @@ async function updateSentence(value, index, type) {
         kakikudashi.innerHTML = kakikudashibun.text 
 
     } catch (error) {
-        console.error('Erorr:', error);
-            alert("Failure; check the console");
+        console.error('Error:', error);
+        alert("Failure; check the console");
     }
 };
+
+
+async function charLookup(element) {
+    try {
+        const response = await fetch('/api/characters/'+element.textContent, {
+            method: 'GET'
+        });
+
+        if (!response.ok) {
+            throw new Error('Response failed: ' + response.statusText);
+        }
+
+        const lookup = await response.json();
+        footer.innerHTML = lookup.imi;
+
+    } catch (error) {
+        console.error('Error:', error);
+        alert("Failure; check the console");
+    }
+}
