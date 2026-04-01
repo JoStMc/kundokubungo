@@ -3,7 +3,7 @@
 
 ---
 
-Kundokubungo is a tool to automatically display 白文 in 縦書き and allow for inputs of 返り点 and 送り仮名, as well as options for 再読文字 and 熟語, represented by a vertical line to the right and just below the first character of the 熟語 respectively. 
+Kundokubungo is a tool to automatically display 白文 in 縦書き and allow for inputs of 返り点 and 送り仮名 to automatically convert to 書き下し, with options for 再読文字 and 熟語, represented by a vertical line to the right and just below the first character of the 熟語 respectively. 
 
 再読|熟語
 :--:|:--:
@@ -22,6 +22,21 @@ Kundokubungo is a tool to automatically display 白文 in 縦書き and allow fo
   - The right most text box is for the first 送り仮名
 - The right box should then update with the correct 書き下し文 when either a button is clicked or when a text box loses focus.
 
+### Dictionary
+
+I've included a dictionary lookup feature, although no dictionary database is provided. Based on what I've found to be most useful, I suggest [漢字林](https://ksbookshelf.com/DW/Kanjirin/index.html). The database schema is based on that (see `sql/schema.sql`). The box at the bottom shows the meaning upon clicking a character:
+
+![dictionary](images/dictionary_sample.png)
+
+If you wish to change the dictionary table structure, install SQLC to regenerate `internal/database/`.
+
+```
+go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest;
+sqlc generate
+```
+
+Then change the character handler and JavaScript accordingly.
+
 ### Setup
 - Clone the directory:
 
@@ -31,9 +46,11 @@ git clone https://github.com/JoStMc/kundokubungo
 
 - Ensure you have the latest version of Go: https://go.dev/dl/
 
+- For dictionary functionality, make sure you have [PostgreSQL](https://www.postgresql.org/) installed and make a database with your desired dictionary based on the schema at `sql/schema.sql`, setting your `.env` variable `DB_PATH` to the database.
+
 - Start the server `cd kundokubungo; go run .`
 
-- The server should be available on port 8091 at http://localhost:8091/app/
+- The server should be available on the port number defined in `.env` (ex. `PORT="8091"`) at `http://localhost:{PORT}/app/`.
 
 ## 返り点
 
