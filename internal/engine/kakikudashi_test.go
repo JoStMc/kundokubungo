@@ -66,10 +66,7 @@ func TestKakikudashi(t *testing.T) {
 	} 
 
 	for name, tc := range tests {
-		got, err := ToKakikudashi(&tc.input)
-		if err != nil {
-		    t.Fatal("Error parsing sentence", err)
-		} 
+		got := ToKakikudashi(&tc.input)
 		if tc.output != got {
 			t.Fatalf("%s: expected: %v, got: %v", name, tc.output, got)
 		} 

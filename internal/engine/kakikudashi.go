@@ -6,11 +6,8 @@ import (
 	"github.com/JoStMc/kundokubungo/internal/models"
 )
 
-func ToKakikudashi(sentence *models.Sentence) (string, error) {
-	order, err := getCharOrder(sentence)
-	if err != nil {
-	    return "", err
-	} 
+func ToKakikudashi(sentence *models.Sentence) string {
+	order := getCharOrder(sentence)
 	var output strings.Builder
 
 	saidokuParsed := make(map[int]struct{})
@@ -27,5 +24,5 @@ func ToKakikudashi(sentence *models.Sentence) (string, error) {
 		output.WriteString(kanji)
 		output.WriteString(okurigana)
 	} 
-	return output.String(), nil
+	return output.String()
 } 

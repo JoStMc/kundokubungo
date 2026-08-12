@@ -86,11 +86,7 @@ func handlerUpdate(w http.ResponseWriter, r *http.Request) {
 		nextChar.IsJukugoTail = !nextChar.IsJukugoTail
 	} 
 
-	kakikudashi, err := engine.ToKakikudashi(&sentenceStore)
-	if err != nil {
-		respondWithError(w, http.StatusInternalServerError, fmt.Sprint("Unable to convert sentence:", err))
-		return
-	}
+	kakikudashi := engine.ToKakikudashi(&sentenceStore)
 
 	respondWithJSON(w, http.StatusOK, updateResponse{
 		Text: kakikudashi,

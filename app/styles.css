@@ -86,7 +86,7 @@ span {
 .kaeriten {
     top: 50px;
     left: 25px;
-    height: 50px;
+    height: 40px;
 }
 
 .okurigana {
@@ -99,6 +99,7 @@ span {
     left:0;
     top:25px;
     height: 50px;
+    display: none;
 }
 
 .btn-issaidoku, .btn-isjuku {
@@ -123,7 +124,7 @@ span {
 }
 
 .btn-isjuku {
-    left: 15px;
+    left: 10px;
 }
 .line-j {
     position: absolute;

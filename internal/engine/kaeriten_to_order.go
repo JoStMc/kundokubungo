@@ -5,7 +5,6 @@ import (
 )
 
 // Here we define what to do for each kaeriten
-// Recently everything has been generalised, so this may be redundant now
 var kaeritenTypes = map[string]func(*config, int) {
 	models.MarkRe: (*config).reten,
 	"": (*config).allChars,
@@ -32,7 +31,7 @@ type config struct {
 // in the sentence should be. 
 // If characters [A, B, C, D] were to return [1, 0, 3, 2], the character 
 // order should be BADC. 
-func getCharOrder(sentence *models.Sentence) ([]int, error) {
+func getCharOrder(sentence *models.Sentence) []int {
 	characters := sentence.Characters
 	saidokuCount := 0
 	for _, char := range(characters) {
@@ -56,7 +55,7 @@ func getCharOrder(sentence *models.Sentence) ([]int, error) {
 		kaeriFunc(&cfg, i)
 	} 
 
-	return cfg.order, nil
+	return cfg.order
 } 
 
 func (cfg *config) allChars(index int) {

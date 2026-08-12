@@ -89,20 +89,14 @@ func TestGetCharOrder(t *testing.T) {
 
 	for name, tc := range tests {
 		sentence := makeSentence(&tc.input)
-		got, err := getCharOrder(&sentence)
-		if err != nil {
-		    t.Fatal("Error parsing sentence", err)
-		} 
+		got := getCharOrder(&sentence)
 		if !reflect.DeepEqual(tc.output, got) {
 			t.Fatalf("%s: expected: %v, got: %v", name, tc.output, got)
 		} 
 	} 
 
 	for name, tc := range otherTests {
-		got, err := getCharOrder(&tc.input)
-		if err != nil {
-		    t.Fatal("Error parsing sentence", err)
-		} 
+		got := getCharOrder(&tc.input)
 		if !reflect.DeepEqual(tc.output, got) {
 			t.Fatalf("%s: expected: %v, got: %v", name, tc.output, got)
 		} 
