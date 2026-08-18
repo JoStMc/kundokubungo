@@ -133,7 +133,7 @@ func (k *kaeri) getSequenceDepths() {
 func (k *kaeri) pushDepth() {
 	for i, depth := range k.sequenceDepths {
 		seqLen := k.sequenceStarts[i] - k.sequenceEnds[i] + 1
-		if depth == 2 && seqLen < 4 {
+		if depth == 2 && seqLen > 3 {
 			k.sequenceDepths[i]++
 			parent := k.sequenceParents[i]
 			for parent != -1 {
@@ -173,7 +173,7 @@ func (k *kaeri) setSequenceKaeri() {
 		}
 
 		// ADD: check for if sequence is too long
-		for s := seqSt; s <= seqEnd; s++ {
+		for s := seqEnd; s <= seqSt; s++ {
 			k.kaeriten[k.positions[s]] = curMark
 			curMark = nextMarks[curMark]
 		} 

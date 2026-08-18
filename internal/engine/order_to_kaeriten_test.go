@@ -96,3 +96,26 @@ func TestGetSequenceDepths(t *testing.T) {
 		}
 	}
 }
+
+func TestGetKaeriten(t *testing.T) {
+	tests := map[string]struct {
+		input []int
+		output []string
+	}{
+		"one": {input: []int{1}, output: []string{""}},
+		"in order": {input: []int{1, 2, 3}, output: []string{"", "", ""}},
+		"reverse order": {input: []int{3, 2, 1}, output: []string{"レ", "レ", ""}},
+		"long": {input: []int{1, 4, 3, 2, 5, 9, 8, 6, 7}, output: []string{"", "レ", "レ", "", "", "レ", "二", "", "一"}},
+		"push depth": {input: []int{8, 1, 7, 6, 4, 2, 3, 5}, output: []string{"丁", "", "丙", "乙", "二", "", "一", "甲"}},
+	}
+
+	for name, tc := range tests {
+		k, err := GetKaeriten(tc.input)
+		if err != nil {
+			log.Fatal(err)
+		}
+		if !reflect.DeepEqual(tc.output, k) {
+			t.Fatalf("%s: expected: %v, got: %v", name, tc.output, k)
+		}
+	}
+}
