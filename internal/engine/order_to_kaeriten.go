@@ -6,6 +6,11 @@ import (
 	"github.com/JoStMc/kundokubungo/internal/models"
 )
 
+// To be refactored
+
+// kaeriten = characters
+// order = desired output order
+// positions = index of where each number is in order[]
 type kaeri struct {
 	kaeriten []string
 	order []int
@@ -19,7 +24,7 @@ type kaeri struct {
 	sequenceChildren []int
 } 
 
-func getKaeriten(order []int) ([]string, error) {
+func GetKaeriten(order []int) ([]string, error) {
 	k := kaeri{
 		kaeriten: make([]string, len(order)),
 		order: order,
@@ -28,6 +33,12 @@ func getKaeriten(order []int) ([]string, error) {
 	if err != nil {
 		return []string{}, err
 	}
+
+	k.getSequences()
+	k.addRes()
+	k.getSequenceDepths()
+	k.pushDepth()
+	k.setSequenceKaeri()
 
 	return k.kaeriten, nil
 }
@@ -82,7 +93,8 @@ func (k *kaeri) addRes() {
 
 // Loops backwards through the sequences to see if any of the later sequences
 // begin or end within the sequence.
-// Sets the parent and child of each sequence accordingly
+// Sets the parent and child of each sequence accordingly to the index of the
+// the sequence which is the parent/child
 func (k *kaeri) getSequenceDepths() {
 	k.sequenceDepths = make([]int, len(k.sequenceEnds))
 	k.sequenceChildren = make([]int, len(k.sequenceEnds))
@@ -114,3 +126,56 @@ func (k *kaeri) getSequenceDepths() {
 		k.sequenceParents[deepestIdx] = i
 	}
 }
+
+// Increases depths of any sequence which is too long for the specific depth
+// e.g. level 2 is 上中下, but if the sequence is 4 characters, it should be 
+// moved to 甲乙丙丁, and 天地人 (level 4) to 元亨利貞
+func (k *kaeri) pushDepth() {
+	for i, depth := range k.sequenceDepths {
+		seqLen := k.sequenceStarts[i] - k.sequenceEnds[i] + 1
+		if depth == 2 && seqLen < 4 {
+			k.sequenceDepths[i]++
+			parent := k.sequenceParents[i]
+			for parent != -1 {
+				k.sequenceDepths[parent]++
+				parent = k.sequenceParents[parent]
+			}
+		}
+	}
+	for i, depth := range k.sequenceDepths {
+		seqLen := k.sequenceStarts[i] - k.sequenceEnds[i] + 1
+		if depth == 4 && seqLen < 4 {
+			k.sequenceDepths[i]++
+			parent := k.sequenceParents[i]
+			for parent != -1 {
+				k.sequenceDepths[parent]++
+				parent = k.sequenceParents[parent]
+			}
+		}
+	}
+}
+
+func (k *kaeri) setSequenceKaeri() {
+	for i, seqSt := range k.sequenceStarts {
+		seqEnd := k.sequenceEnds[i]
+		if seqSt == seqEnd {
+		    continue
+		} 
+
+		curMark := ""
+		switch k.sequenceDepths[i] {
+		case 1: curMark = "一"
+		case 2: curMark = "上"
+		case 3: curMark = "甲"
+		case 4: curMark = "天"
+		case 5: curMark = "元"
+		case 6: curMark = "乾"
+		}
+
+		// ADD: check for if sequence is too long
+		for s := seqSt; s <= seqEnd; s++ {
+			k.kaeriten[k.positions[s]] = curMark
+			curMark = nextMarks[curMark]
+		} 
+	} 
+} 
