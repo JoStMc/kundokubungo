@@ -1,5 +1,7 @@
 const rawInput = document.getElementById('input');
+const orderInput = document.getElementById('order');
 const inputButton = document.getElementById('btn-input');
+const orderButton = document.getElementById('btn-order');
 const tategaki = document.querySelector('.tategaki');
 const kakikudashi = document.querySelector('.kakikudashi');
 const footer = document.querySelector('.footer');
@@ -18,7 +20,7 @@ async function renderTategaki(sentence) {
 <div class="line-s" id="saidoku${index}"></div>
 <button class="btn-isjuku" onclick="updateJuku(${index})">熟</button>
 <div class="line-j" id="juku${index}"></div>
-<textarea class="kaeriten" onchange="updateSentence(this.value, ${index}, 'kaeri')"></textarea>
+<textarea class="kaeriten" onchange="updateSentence(this.value, ${index}, 'kaeri')">${char.Kaeriten}</textarea>
 <textarea class="okurigana" onchange="updateSentence(this.value, ${index}, 'okuri')"></textarea>
 `;
         box.dataset.index = index;
@@ -47,6 +49,31 @@ inputButton.addEventListener('click', async () => {
         const sentenceData = await response.json();
         renderTategaki(sentenceData.sentence);
 
+    } catch (error) {
+        console.error('Error:', error);
+        alert("Failure; check the console");
+    }
+});
+
+orderButton.addEventListener('click', async () => {
+    const input = orderInput.value;
+    if (!input) return;
+    try {
+        const response = await fetch('/api/autofill', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ order: input })
+        });
+    
+        if (!response.ok) {
+            throw new Error('Response failed: ' + response.statusText);
+        }
+
+        const sentenceData = await response.json();
+        renderTategaki(sentenceData.sentence);
+        kakikudashi.innerHTML = sentenceData.kakikudashi
     } catch (error) {
         console.error('Error:', error);
         alert("Failure; check the console");

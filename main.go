@@ -54,6 +54,7 @@ func main() {
 	mux.HandleFunc("POST /api/sentences", handlerCreate)
 	mux.HandleFunc("PATCH /api/sentences/{id}", handlerUpdate)
 	mux.HandleFunc("GET /api/characters/{kanji}", cfg.handlerCharacterLookup)
+	mux.HandleFunc("POST /api/autofill", handlerAutofill)
 
 	srv := &http.Server{
 		Addr:    ":" + port,
