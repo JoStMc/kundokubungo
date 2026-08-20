@@ -164,16 +164,20 @@ func (k *kaeri) setSequenceKaeri() {
 
 		curMark := ""
 		switch k.sequenceDepths[i] {
-		case 1: curMark = "一"
-		case 2: curMark = "上"
-		case 3: curMark = "甲"
-		case 4: curMark = "天"
-		case 5: curMark = "元"
-		case 6: curMark = "乾"
+		case 1: curMark = models.MarkIchi
+		case 2: curMark = models.MarkJou
+		case 3: curMark = models.MarkKou
+		case 4: curMark = models.MarkTen
+		case 5: curMark = models.MarkGen
+		case 6: curMark = models.MarkKen
 		}
 
 		// ADD: check for if sequence is too long
 		for s := seqEnd; s <= seqSt; s++ {
+			// Skip the Chuu when length is only 2
+			if k.sequenceDepths[i] == 2 && curMark == models.MarkChuu && s == seqSt {
+				curMark = models.MarkGe
+			} 
 			k.kaeriten[k.positions[s]] = curMark
 			curMark = nextMarks[curMark]
 		} 

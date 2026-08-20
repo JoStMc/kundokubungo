@@ -15,4 +15,10 @@ const (
 	MarkOtsu = "乙"
 	MarkHei  = "丙" 
 	MarkTei  = "丁"
+
+	MarkTen = "天"
+
+	MarkGen = "元"
+
+	MarkKen = "乾"
 )
