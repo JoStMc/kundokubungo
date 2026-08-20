@@ -12,6 +12,8 @@ Kundokubungo is a tool to automatically display 白文 in 縦書き and allow fo
 
 ## How to use
 
+### Basics
+
 - Enter 白文 in the text box at the top and click "Enter / 入力"
 - The text should appear in both boxes below (縦書き left and 書き下し文 right)
 - On hovering over a character, there should appear 2 buttons (labelled 塾 and 再) and three text boxes.
@@ -21,6 +23,17 @@ Kundokubungo is a tool to automatically display 白文 in 縦書き and allow fo
   - The second text box is for the [返点](#返り点)
   - The right most text box is for the first 送り仮名
 - The right box should then update with the correct 書き下し文 when either a button is clicked or when a text box loses focus.
+
+
+### Autofill
+
+For any *possible* ordering using 訓読, the "*Autofill*" feature should automatically fill in a possible set of 返り点. Simply enter the number for when each number should be read (e.g. "2 3 1" means the 1st character should be read second, the 2nd third, and the 3rd first), separated by anything. 
+
+![autofill](images/autofill_sample.png)
+
+一レ and 上レ are not currently supported with *Autofill*. 再読文字 and 熟語 should be treated separately, such as by giving the order for when the 再読文字 is to be returned to.
+
+**Note:** The sentence should be entered first, and every character is included in the order, so the order should be the same length as the sentence, including punctuation.
 
 ### Dictionary
 
